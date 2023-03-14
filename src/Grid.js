@@ -4,18 +4,22 @@ const numRows = 40;
 const numCols = 40;
 
 const generateColor = () => {
-  const colors = ['red', 'green', 'blue', 'yellow', 'purple', 'orange'];
+  const colors = [
+    'bg-slate-400',
+    'bg-slate-500',
+    'bg-slate-600',
+    'bg-slate-700',
+    'bg-gray-400',
+    'bg-gray-500',
+    'bg-gray-600',
+    'bg-gray-700',
+  ];
   return colors[Math.floor(Math.random() * colors.length)];
 };
 
 const Cell = ({ alive }) => (
   <div
-    style={{
-      width: 20,
-      height: 20,
-      backgroundColor: alive ? generateColor() : 'white',
-      border: '1px solid gray',
-    }}
+    className={`${alive ? generateColor() : 'bg-white'} border border-gray-900 w-5 h-5`}
   />
 );
 
@@ -39,6 +43,12 @@ const Grid = () => {
     initializeRPentomino(emptyGrid);
     return emptyGrid;
   });
+
+  const restartAnimation = () => {
+    const emptyGrid = createEmptyGrid();
+    initializeRPentomino(emptyGrid);
+    setGrid(emptyGrid);
+  };
 
   const nextGeneration = () => {
     const newGrid = createEmptyGrid();
@@ -77,17 +87,26 @@ const Grid = () => {
   }, [grid]);
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: `repeat(${numCols}, 20px)`,
-      }}
-    >
-      {grid.map((row, i) =>
-        row.map((cell, j) => (
-          <Cell key={`${i}-${j}`} alive={cell} />
-        )),
-      )}
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <h2 className="text-2xl mb-1">ChatGPT4 - R-pentomino Conway's Game of Life</h2>
+      <button
+        className="mt-4 mb-4 px-4 py-2 text-white font-semibold bg-slate-600 hover:bg-slate-500 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500"
+        onClick={restartAnimation}
+      >
+        Restart Animation
+      </button>
+      <div
+        className="grid grid-flow-row-dense gap-0.5"
+        style={{
+            gridTemplateColumns: `repeat(${numCols}, 1.25rem)`,
+        }}
+      >
+        {grid.map((row, i) =>
+          row.map((cell, j) => (
+            <Cell key={`${i}-${j}`} alive={cell} />
+          )),
+        )}
+      </div>
     </div>
   );
 };
