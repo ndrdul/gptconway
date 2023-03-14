@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-const numRows = 40;
-const numCols = 40;
+const numRows = 25;
+const numCols = 25;
 
 const generateColor = () => {
   const colors = [
